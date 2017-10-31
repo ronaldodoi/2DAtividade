@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCtrl : MonoBehaviour {
 
 	public float horizontalSpeed = 10f;
+	public float jumpSpeed = 600f;
 
 	Rigidbody2D rb;
 
@@ -17,15 +18,20 @@ public class PlayerCtrl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-	float horizontalInput = Input.GetAxisRaw("Horizontal"); // -1: esquerda, 1: direita
-	float horizontalPlayerSpeed = horizontalSpeed * horizontalInput;
-	if (horizontalPlayerSpeed != 0){
-		MoveHorizontal(horizontalPlayerSpeed);
-	}
-	else
-	{
+		float horizontalInput = Input.GetAxisRaw("Horizontal"); // -1: esquerda, 1: direita
+		float horizontalPlayerSpeed = horizontalSpeed * horizontalInput;
+		if (horizontalPlayerSpeed != 0){
+			MoveHorizontal(horizontalPlayerSpeed);
+		}
+		else	{
 		StopMovingHorizontal();
-	}
+		}
+	
+		if(Input.GetButtonDown("Jump")){
+			Jump();
+		}
+	
+	
 	}
 
 	void MoveHorizontal(float speed) {
@@ -39,6 +45,10 @@ public class PlayerCtrl : MonoBehaviour {
 
 	}
 
+	void Jump(){
+		rb.AddForce(new Vector2(0f, jumpSpeed));
+
+	}
 
 
 }
