@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GM : MonoBehaviour {
 
@@ -51,6 +52,22 @@ public class GM : MonoBehaviour {
 		DisplayHudData();
 	}
 
+	public void restartLevel(){
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+	}
+
+	public void ExitToMainMenu(){
+		LoadScene("MainMenu");
+	}
+
+	public void closeApp(){
+		Application.Quit();
+	}
+
+	public void LoadScene(string sceneName){
+		SceneManager.LoadScene(sceneName);
+	}
+
 	void UpdateTimer(){
 		if(timerOn){
 			timeLeft = timeLeft - Time.deltaTime;
@@ -63,6 +80,7 @@ public class GM : MonoBehaviour {
 
 	void DisplayHudData(){
 		ui.hud.txtCoinCount.text = "x " + data.coinCount;
+		ui.hud.txtLifeCount.text = "x " + data.lifeCount;
 		ui.hud.txtTimer.text = "Timer: " + timeLeft.ToString("F1");
 	}
 
@@ -77,7 +95,13 @@ public class GM : MonoBehaviour {
 	public void killPlayer(){
 		if(player!=null){
 			Destroy(player.gameObject);
-			Invoke("RespawnPlayer", timeToResp);
+			DecrementLife();
+			if(data.lifeCount>0){
+				Invoke("RespawnPlayer", timeToResp);
+			}
+			else{
+				GameOver();
+			}
 		}
 	}
 
@@ -93,6 +117,10 @@ public class GM : MonoBehaviour {
 		ui.gameOver.txtCoinCount.text = "Coins - " + data.coinCount;
 		ui.gameOver.txtTimer.text = "Timer - " + timeLeft.ToString("F1");
 		ui.gameOver.gameOverPanel.SetActive(true);
+	}
+
+	public void DecrementLife(){
+		data.lifeCount--;
 	}
 
 }
