@@ -131,6 +131,7 @@ public class PlayerCtrl : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Coin"))
         {
+            SFXManager.instance.ShowCoinParticles(other.gameObject);
             Destroy(other.gameObject);
         }
     }
